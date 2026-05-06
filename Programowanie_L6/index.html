@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ćwiczenie 6</title>
+
+<style>
+#link_list {
+    visibility: hidden;
+    display: block;
+    background-color: tomato;
+    width: 100px;
+    position: absolute;
+    top: 50px;
+    padding: 10px;
+}
+
+#menu_link {
+    height: 60px;
+    width: 140px;
+    background-color: lightgreen;
+    text-align: center;
+    cursor: pointer;
+    line-height: 60px;
+}
+
+#reset { display:none; }
+</style>
+</head>
+
+<body>
+
+<h2>Ćwiczenie 6</h2>
+
+<div id="menu">
+    <div id="menu_link">Opcja w menu</div>
+    <ul id="link_list">
+        <li>Link 1</li>
+        <li>Link 2</li>
+        <li>Link 3</li>
+    </ul>
+</div>
+
+<hr>
+<h1 id="czas">
+<span id="godziny">00</span>:
+<span id="minuty">00</span>:
+<span id="sekundy">00</span>
+</h1>
+
+<button id="start">START</button>
+<button id="zapisz">ZAPISZ</button>
+<button id="stop">STOP</button>
+<button id="reset">RESET</button>
+
+<p id="stan_stopera"></p>
+
+<ul id="zapisane_czasy"></ul>
+
+<hr>
+
+<h3>Aktualny czas w Polsce:</h3>
+<p id="api_czas">Ładowanie...</p>
+
+
+<script>
+
+const menu = document.getElementById("menu");
+const list = document.getElementById("link_list");
+
+menu.addEventListener("mouseenter", () => {
+    list.style.visibility = "visible";
+});
+
+menu.addEventListener("mouseleave", () => {
+    list.style.visibility = "hidden";
+});
+
+
+let sek = 0;
+let timer = null;
+
+const h = document.getElementById("godziny");
+const m = document.getElementById("minuty");
+const s = document.getElementById("sekundy");
+
+const startBtn = document.getElementById("start");
+const stopBtn = document.getElementById("stop");
+const resetBtn = document.getElementById("reset");
+const zapiszBtn = document.getElementById("zapisz");
+
+const stan = document.getElementById("stan_stopera");
+const lista = document.getElementById("zapisane_czasy");
+
+function format() {
+    let godz = Math.floor(sek / 3600);
+    let min = Math.floor((sek % 3600) / 60);
+    let sec = sek % 60;
+
+    h.textContent = String(godz).padStart(2, "0");
+    m.textContent = String(min).padStart(2, "0");
+    s.textContent = String(sec).padStart(2, "0");
+}
+
+function updateButtons(state) {
+    if (state === "idle") {
+        startBtn.style.display = "inline-block";
+        zapiszBtn.style.display = "inline-block";
+        stopBtn.style.display = "none";
+        resetBtn.style.display = "none";
+    }
+
+    if (state === "running") {
+        startBtn.style.display = "none";
+        zapiszBtn.style.display = "inline-block";
+        stopBtn.style.display = "inline-block";
+        resetBtn.style.display = "none";
+    }
+
+    if (state === "stopped") {
+        startBtn.style.display = "inline-block";
+        zapiszBtn.style.display = "inline-block";
+        stopBtn.style.display = "none";
+        resetBtn.style.display = "inline-block";
+    }
+}
+
+startBtn.onclick = () => {
+    if (!timer) {
+        timer = setInterval(() => {
+            sek++;
+            format();
+        }, 1000);
+    }
+
+    stan.textContent = "Trwa odliczanie";
+    updateButtons("running");
+};
+
+stopBtn.onclick = () => {
+    clearInterval(timer);
+    timer = null;
+
+    stan.textContent = "Wstrzymano odliczanie";
+    updateButtons("stopped");
+};
+
+resetBtn.onclick = () => {
+    clearInterval(timer);
+    timer = null;
+    sek = 0;
+
+    lista.innerHTML = "";
+    stan.textContent = "";
+    format();
+
+    updateButtons("idle");
+};
+
+zapiszBtn.onclick = () => {
+    let li = document.createElement("li");
+    li.textContent = `${h.textContent}:${m.textContent}:${s.textContent}`;
+    lista.appendChild(li);
+};
+
+format();
+updateButtons("idle");
+
+
+async function pobierzCzas() {
+    try {
+        const res = await fetch("https://timeapi.io/api/Time/current/zone?timeZone=Europe/Warsaw");
+        const data = await res.json();
+
+        document.getElementById("api_czas").textContent =
+            data.dateTime;
+    } catch (e) {
+        document.getElementById("api_czas").textContent =
+            "Błąd pobierania danych";
+    }
+}
+
+pobierzCzas();
+
+</script>
+
+</body>
+</html>
