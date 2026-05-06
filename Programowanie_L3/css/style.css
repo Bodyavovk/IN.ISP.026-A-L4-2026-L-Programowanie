@@ -1,0 +1,52 @@
+body {
+    font-family: Calibri, sans-serif;
+    font-size: 20px;
+    color: darkblue;
+}
+
+.naglowek {
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.blok {
+    width: 600px;
+    height: 200px;
+    border: 1px solid black;
+    overflow: auto;
+    text-align: justify;
+    margin: 0 auto 20px auto;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+    color: darkblue;
+    text-decoration: none;
+}
+
+
+table {
+    margin-left: 55%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+td {
+    border: 1px solid black;
+    padding: 5px 10px;
+}
+
+.kolorowy {
+    text-align: center;
+    color: purple;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+ul {
+    list-style-type: circle;
+}
