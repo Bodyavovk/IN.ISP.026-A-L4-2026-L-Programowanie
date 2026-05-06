@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Clicker Game</title>
+
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    margin-top: 50px;
+}
+
+button {
+    padding: 15px;
+    margin: 10px;
+    font-size: 16px;
+}
+
+#clickBtn {
+    font-size: 30px;
+    padding: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>CLICKER GAME</h1>
+
+<h2>Punkty: <span id="score">0</span></h2>
+
+<button id="clickBtn">CLICK</button>
+
+<hr>
+
+<h3>Ulepszenia</h3>
+
+<button onclick="buyClick()">+Klik (lvl: <span id="clickLvl">1</span>) - koszt: <span id="clickCost">10</span></button>
+
+<button onclick="buyPassive()">+Passive (lvl: <span id="passLvl">0</span>) - koszt: <span id="passCost">25</span></button>
+
+<p id="info"></p>
+
+<script>
+
+let score = 0;
+
+let clickPower = 1;
+let clickLevel = 1;
+let clickCost = 10;
+
+let passive = 0;
+let passLevel = 0;
+let passCost = 25;
+
+function loadGame() {
+    let data = localStorage.getItem("clickerSave");
+    if (data) {
+        let save = JSON.parse(data);
+
+        score = save.score;
+        clickPower = save.clickPower;
+        clickLevel = save.clickLevel;
+        clickCost = save.clickCost;
+
+        passive = save.passive;
+        passLevel = save.passLevel;
+        passCost = save.passCost;
+    }
+}
+
+function saveGame() {
+    let save = {
+        score,
+        clickPower,
+        clickLevel,
+        clickCost,
+        passive,
+        passLevel,
+        passCost,
+        lastTime: Date.now()
+    };
+
+    localStorage.setItem("clickerSave", JSON.stringify(save));
+}
+
+function updateUI() {
+    document.getElementById("score").textContent = Math.floor(score);
+
+    document.getElementById("clickLvl").textContent = clickLevel;
+    document.getElementById("clickCost").textContent = clickCost;
+
+    document.getElementById("passLvl").textContent = passLevel;
+    document.getElementById("passCost").textContent = passCost;
+}
+
+document.getElementById("clickBtn").onclick = () => {
+    score += clickPower;
+    updateUI();
+    saveGame();
+};
+
+function buyClick() {
+    if (score >= clickCost) {
+        score -= clickCost;
+        clickLevel++;
+        clickPower++;
+
+        clickCost = Math.floor(clickCost * 1.5);
+        updateUI();
+        saveGame();
+    }
+}
+
+function buyPassive() {
+    if (score >= passCost) {
+        score -= passCost;
+        passLevel++;
+        passive += 1;
+
+        passCost = Math.floor(passCost * 1.6);
+        updateUI();
+        saveGame();
+    }
+}
+
+setInterval(() => {
+    score += passive;
+    updateUI();
+}, 1000);
+
+function calculateOffline() {
+    let data = localStorage.getItem("clickerSave");
+    if (!data) return;
+
+    let save = JSON.parse(data);
+
+    if (save.lastTime) {
+        let diff = (Date.now() - save.lastTime) / 1000;
+
+        let gained = diff * save.passive;
+
+        if (gained > 0) {
+            score += gained;
+            document.getElementById("info").textContent =
+                "Offline bonus: +" + Math.floor(gained);
+        }
+    }
+}
+
+loadGame();
+calculateOffline();
+updateUI();
+setInterval(saveGame, 5000);
+
+</script>
+
+</body>
+</html>
