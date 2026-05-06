@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ćwiczenie 7</title>
+
+<style>
+body {
+    font-family: Arial;
+    margin: 20px;
+}
+
+.section {
+    margin-bottom: 40px;
+    padding: 15px;
+    border: 1px solid #ccc;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Ćwiczenie 7 - Formularze</h1>
+
+<div class="section">
+
+<h2>Zadanie 1 - Dzielenie</h2>
+
+<input id="a" placeholder="Pierwsza liczba">
+<input id="b" placeholder="Druga liczba">
+<button onclick="dziel()">Oblicz</button>
+
+<p id="wynik1"></p>
+
+<script>
+function dziel() {
+    try {
+        let a = parseFloat(document.getElementById("a").value);
+        let b = parseFloat(document.getElementById("b").value);
+
+        if (isNaN(a) || isNaN(b)) throw "Błędne dane";
+        if (b === 0) throw "Nie można dzielić przez 0";
+
+        document.getElementById("wynik1").textContent =
+            "Wynik: " + (a / b);
+
+    } catch (e) {
+        document.getElementById("wynik1").textContent =
+            "Błąd: " + e;
+    }
+}
+</script>
+
+</div>
+
+
+<div class="section">
+
+<h2>Zadanie 2 - Rejestracja</h2>
+
+<form id="form">
+
+Login:<br>
+<input id="login"><br><br>
+
+E-mail:<br>
+<input id="email"><br><br>
+
+Hasło:<br>
+<input type="password" id="pass1"><br><br>
+
+Powtórz hasło:<br>
+<input type="password" id="pass2"><br><br>
+
+Data urodzenia:<br>
+<input type="date" id="date"><br><br>
+
+Płeć:<br>
+<select id="gender">
+<option>Mężczyzna</option>
+<option>Kobieta</option>
+<option>Nie chcę podawać</option>
+</select><br><br>
+
+<label>
+<input type="checkbox" id="reg"> Akceptuję regulamin
+</label><br><br>
+
+Wersja:<br>
+<input type="radio" name="ver" value="Darmowa"> Darmowa
+<input type="radio" name="ver" value="Standardowa"> Standardowa
+<input type="radio" name="ver" value="Premium"> Premium
+<br><br>
+
+<button type="button" onclick="rejestruj()">Zarejestruj się</button>
+<button type="reset">Wyczyść</button>
+
+</form>
+
+<p id="wynik2"></p>
+
+<script>
+function rejestruj() {
+
+    let login = document.getElementById("login").value;
+    let email = document.getElementById("email").value;
+    let p1 = document.getElementById("pass1").value;
+    let p2 = document.getElementById("pass2").value;
+    let date = document.getElementById("date").value;
+    let reg = document.getElementById("reg").checked;
+
+    let gender = document.getElementById("gender").value;
+    let version = document.querySelector('input[name="ver"]:checked');
+
+    let out = document.getElementById("wynik2");
+
+    let errors = [];
+
+    if (!login || !email || !p1 || !p2 || !date || !version) {
+        errors.push("Wypełnij wszystkie pola");
+    }
+
+    if (!/^[a-zA-Z0-9]+$/.test(login)) {
+        errors.push("Login tylko litery i cyfry");
+    }
+
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+        errors.push("Błędny e-mail");
+    }
+
+    if (p1.length < 8 || !/\d/.test(p1)) {
+        errors.push("Hasło min 8 znaków + cyfra");
+    }
+
+    if (p1 !== p2) {
+        errors.push("Hasła różne");
+    }
+
+    if (!reg) {
+        errors.push("Musisz zaakceptować regulamin");
+    }
+
+    let birth = new Date(date);
+    let age = new Date().getFullYear() - birth.getFullYear();
+
+    if (age < 18) {
+        errors.push("Musisz mieć 18+");
+    }
+
+    if (errors.length > 0) {
+        out.innerHTML = errors.join("<br>");
+        return;
+    }
+
+    let stars = "*".repeat(p1.length);
+
+    let formattedDate =
+        String(birth.getDate()).padStart(2,"0") + "." +
+        String(birth.getMonth()+1).padStart(2,"0") + "." +
+        birth.getFullYear();
+
+    out.innerHTML =
+        "Nazwa użytkownika: " + login + "<br>" +
+        "Hasło: " + stars + "<br>" +
+        "Adres e-mail: " + email + "<br>" +
+        "Data urodzenia: " + formattedDate + "<br>" +
+        "Płeć: " + gender + "<br>" +
+        "Wybrana wersja: " + version.value;
+}
+</script>
+
+</div>
+
+</body>
+</html>
