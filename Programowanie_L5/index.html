@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ćwiczenie 5</title>
+</head>
+<body>
+
+<h2>Otwórz konsolę (F12)</h2>
+
+<script>
+
+// Zadanie 1
+function funkcjaTestowa() {
+    console.log("Zadanie 1:");
+    console.log("Witaj JS!");
+}
+funkcjaTestowa();
+
+
+// Zadanie 2
+function liczbyParzyste(a, b) {
+    console.log("Zadanie 2:");
+    let wynik = [];
+
+    for (let i = a; i <= b; i++) {
+        if (i % 2 === 0) {
+            wynik.push(i);
+        }
+    }
+
+    console.log(wynik);
+}
+liczbyParzyste(1, 10);
+
+
+// Zadanie 3
+function fibonacci(n) {
+    console.log("Zadanie 3:");
+    let tab = [0, 1];
+
+    for (let i = 2; i < n; i++) {
+        tab.push(tab[i - 1] + tab[i - 2]);
+    }
+
+    console.log(tab);
+}
+fibonacci(10);
+
+
+// Zadanie 4
+function silnia(n) {
+    if (n === 0) return 1;
+    return n * silnia(n - 1);
+}
+
+console.log("Zadanie 4:");
+console.log(silnia(5));
+
+
+// Zadanie 5
+function obliczPi(n) {
+    console.log("Zadanie 5:");
+
+    let suma = 0;
+
+    for (let i = 0; i < n; i++) {
+        suma += ((i % 2 === 0 ? 1 : -1) / (2 * i + 1));
+    }
+
+    console.log(4 * suma);
+}
+obliczPi(100);
+
+
+// Zadanie 6
+function choinka(n) {
+    console.log("Zadanie 6:");
+
+    for (let i = 1; i <= n; i++) {
+        console.log(" ".repeat(n - i) + "*".repeat(2 * i - 1));
+    }
+}
+choinka(5);
+
+
+// Zadanie 7
+function naHex(num) {
+    console.log("Zadanie 7:");
+
+    if (num === 0) {
+        console.log("0");
+        return;
+    }
+
+    let znaki = "0123456789ABCDEF";
+    let wynik = "";
+
+    while (num > 0) {
+        wynik = znaki[num % 16] + wynik;
+        num = Math.floor(num / 16);
+    }
+
+    console.log(wynik);
+}
+
+naHex(255);
+
+</script>
+
+</body>
+</html>
