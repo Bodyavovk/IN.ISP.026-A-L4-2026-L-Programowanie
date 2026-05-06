@@ -1,0 +1,108 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #e5e5e5;
+}
+
+
+header {
+    display: flex;
+    align-items: center;
+    background: green;
+}
+
+.logo {
+    background: yellow;
+    padding: 10px;
+    font-weight: bold;
+}
+
+nav {
+    margin: 0 auto;
+}
+
+nav a {
+    background: #66d9ff;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: black;
+}
+
+
+main {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.content-box {
+    width: 520px;
+    height: 500px;
+    background: orange;
+    padding: 10px;
+    overflow-y: scroll;
+}
+
+
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+
+.left-side {
+    display: flex;
+    align-items: flex-start;
+}
+
+
+ .dots {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    line-height: 12px;
+    margin-top: -10px; 
+}
+
+.left-side ul {
+    margin: 0;
+    padding-left: 15px;
+    font-size: 13px;
+}
+.right-text {
+    text-align: right;
+    font-size: 13px;
+}
+
+.content-box p {
+    text-indent: 40px;
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+footer {
+    background: red;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+.top-list {
+    margin: 0;
+    padding-left: 15px;
+    margin-bottom: 5px;
+}
+
+.main-list {
+    margin: 0;
+    padding-left: 15px;
+    font-size: 14px;
+}
+
+.right-text {
+    float: right;
+    text-align: right;
+    font-size: 14px;
+}
