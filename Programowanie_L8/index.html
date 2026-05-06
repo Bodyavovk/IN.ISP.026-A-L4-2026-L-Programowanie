@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ćwiczenie 8</title>
+</head>
+
+<body>
+
+<h2>Ćwiczenie 8 - JS OOP + Functional</h2>
+
+<button onclick="start()">URUCHOM</button>
+
+<pre id="out"></pre>
+
+<script>
+
+const out = document.getElementById("out");
+
+
+function zad1() {
+    let osoba = {
+        imie: "Jan",
+        nazwisko: "Kowalski",
+        wiek: 20
+    };
+
+    out.innerHTML += "ZADANIE 1\n";
+
+    console.log(osoba);
+
+    
+    console.log(osoba.imie);
+    console.log(osoba.nazwisko);
+    console.log(osoba.wiek);
+
+    let json = JSON.stringify(osoba);
+    console.log(json);
+
+    out.innerHTML += json + "\n\n";
+}
+
+
+class ComplexNumber {
+    constructor(real, imaginary) {
+        this.real = real;
+        this.imaginary = imaginary;
+    }
+
+    wypisz() {
+        return `${this.real} ${this.imaginary >= 0 ? "+" : "-"} ${Math.abs(this.imaginary)}i`;
+    }
+
+    module() {
+        return Math.sqrt(this.real ** 2 + this.imaginary ** 2);
+    }
+}
+
+
+function generateComplex(n) {
+    let arr = [];
+
+    for (let i = 0; i < n; i++) {
+        let real = Math.floor(Math.random() * 10 - 5);
+        let imag = Math.floor(Math.random() * 10 - 5);
+
+        arr.push(new ComplexNumber(real, imag));
+    }
+
+    return arr;
+}
+
+
+function zad4(arr) {
+    return arr.filter(c => c.real > 0 && c.imaginary > 0);
+}
+
+
+function zad5(arr) {
+    return arr.map(c => new ComplexNumber(c.imaginary, c.real));
+}
+
+
+function zad6(arr) {
+    return arr.reduce((sum, c) => sum + c.module(), 0);
+}
+
+
+function zad7(arr) {
+    return arr.reduce((min, c) =>
+        c.module() < min ? c.module() : min
+    , arr[0].module());
+}
+
+
+function zad8(arr) {
+    return arr.reduce((max, c) =>
+        c.module() > max.module() ? c : max
+    );
+}
+
+
+function start() {
+
+    out.innerHTML = "";
+
+    zad1();
+
+    let arr = generateComplex(5);
+
+    out.innerHTML += "GENEROWANE LICZBY:\n";
+    arr.forEach(c => out.innerHTML += c.wypisz() + "\n");
+
+    let f = zad4(arr);
+    out.innerHTML += "\nFILTER (+ +):\n";
+    f.forEach(c => out.innerHTML += c.wypisz() + "\n");
+
+    let m = zad5(arr);
+    out.innerHTML += "\nMAP (swap):\n";
+    m.forEach(c => out.innerHTML += c.wypisz() + "\n");
+
+    let sum = zad6(arr);
+    out.innerHTML += "\nSUMA MODUŁÓW:\n" + sum + "\n";
+
+    let min = zad7(arr);
+    out.innerHTML += "\nMIN MODUŁ:\n" + min + "\n";
+
+    let max = zad8(arr);
+    out.innerHTML += "\nMAX MODUŁ:\n" + max.wypisz() + "\n";
+}
+
+</script>
+
+</body>
+</html>
